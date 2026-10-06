@@ -93,8 +93,20 @@ export const GoogleDocsExportModal: React.FC<GoogleDocsExportModalProps> = ({
         onUserChange(result.user);
         setStatus('idle');
         setStatusMessage('');
+      } else {
+        // User closed or dismissed the popup window
+        setStatus('idle');
+        setStatusMessage('');
       }
     } catch (err: any) {
+      if (
+        err?.code === 'auth/popup-closed-by-user' ||
+        err?.code === 'auth/cancelled-popup-request'
+      ) {
+        setStatus('idle');
+        setStatusMessage('');
+        return;
+      }
       setStatus('error');
       setErrorMessage(err?.message || 'Failed to sign in with Google');
     }
@@ -105,8 +117,8 @@ export const GoogleDocsExportModal: React.FC<GoogleDocsExportModalProps> = ({
       await logout();
       onUserChange(null);
       setStatus('idle');
-    } catch (err: any) {
-      console.error('Logout error:', err);
+    } catch {
+      // Ignored
     }
   };
 
@@ -121,7 +133,10 @@ export const GoogleDocsExportModal: React.FC<GoogleDocsExportModalProps> = ({
         setStatusMessage('Connecting your Google account...');
         const authResult = await googleSignIn();
         if (!authResult) {
-          throw new Error('Google sign-in was cancelled or failed.');
+          // User closed or cancelled popup
+          setStatus('idle');
+          setStatusMessage('');
+          return;
         }
         token = authResult.accessToken;
         onUserChange(authResult.user);
@@ -161,7 +176,14 @@ export const GoogleDocsExportModal: React.FC<GoogleDocsExportModalProps> = ({
       setStatus('success');
       setStatusMessage('Document created successfully in Google Drive!');
     } catch (err: any) {
-      console.error('Export error:', err);
+      if (
+        err?.code === 'auth/popup-closed-by-user' ||
+        err?.code === 'auth/cancelled-popup-request'
+      ) {
+        setStatus('idle');
+        setStatusMessage('');
+        return;
+      }
       setStatus('error');
       setErrorMessage(err?.message || 'An error occurred while creating the Google Doc.');
     }
