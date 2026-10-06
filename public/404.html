@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Learner Passport</title>
+    <script>
+      (function() {
+        // SPA redirect handler for GitHub Pages
+        try {
+          var path = location.pathname;
+          var segments = path.split('/').filter(Boolean);
+          var base = '/';
+          if (location.hostname.endsWith('github.io') && segments.length > 0) {
+            base = '/' + segments[0] + '/';
+            if (segments[1] === 'docs') {
+              base += 'docs/';
+            }
+          }
+          location.replace(base + location.search + location.hash);
+        } catch (e) {
+          location.replace('./');
+        }
+      })();
+    </script>
+  </head>
+  <body style="font-family: system-ui, -apple-system, sans-serif; text-align: center; padding: 48px; background: #0f172a; color: #f8fafc;">
+    <p>Loading My Learner Passport...</p>
+  </body>
+</html>

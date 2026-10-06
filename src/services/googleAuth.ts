@@ -1,4 +1,4 @@
-import { initializeApp, getApps, getApp } from 'firebase/app';
+import { initializeApp, getApps, getApp, FirebaseApp } from 'firebase/app';
 import {
   getAuth,
   signInWithPopup,
@@ -6,23 +6,33 @@ import {
   onAuthStateChanged,
   User,
   signOut,
+  Auth,
 } from 'firebase/auth';
 import firebaseConfig from '../../firebase-applet-config.json';
 
-// Reuse existing app if already initialized
-const app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
-export const auth = getAuth(app);
+// Safely initialize Firebase app and auth without crashing if config is incomplete
+let app: FirebaseApp | null = null;
+let authInstance: Auth | null = null;
+let providerInstance: GoogleAuthProvider | null = null;
 
-// Provider with required Workspace scopes
-export const googleProvider = new GoogleAuthProvider();
-googleProvider.addScope('https://www.googleapis.com/auth/documents');
-googleProvider.addScope('https://www.googleapis.com/auth/drive.file');
-googleProvider.addScope('https://www.googleapis.com/auth/drive.metadata.readonly');
+try {
+  if (firebaseConfig && (firebaseConfig as any).apiKey) {
+    app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
+    authInstance = getAuth(app);
+    providerInstance = new GoogleAuthProvider();
+    providerInstance.addScope('https://www.googleapis.com/auth/documents');
+    providerInstance.addScope('https://www.googleapis.com/auth/drive.file');
+    providerInstance.addScope('https://www.googleapis.com/auth/drive.metadata.readonly');
+    providerInstance.setCustomParameters({
+      prompt: 'select_account',
+    });
+  }
+} catch (err) {
+  console.warn('Firebase initialization deferred:', err);
+}
 
-// Prompt user for consent to ensure offline/refreshed tokens when needed
-googleProvider.setCustomParameters({
-  prompt: 'select_account',
-});
+export const auth = authInstance;
+export const googleProvider = providerInstance;
 
 // Flag to track active sign-in flow
 let isSigningIn = false;
@@ -37,6 +47,11 @@ export const initAuth = (
   onAuthSuccess?: (user: User, token: string) => void,
   onAuthFailure?: () => void
 ) => {
+  if (!auth) {
+    if (onAuthFailure) onAuthFailure();
+    return () => {};
+  }
+
   return onAuthStateChanged(auth, async (user: User | null) => {
     if (user) {
       if (cachedAccessToken) {
@@ -56,6 +71,10 @@ export const initAuth = (
  * Sign in with Google popup and cache access token in memory.
  */
 export const googleSignIn = async (): Promise<{ user: User; accessToken: string } | null> => {
+  if (!auth || !googleProvider) {
+    throw new Error('Google authentication is not available in this environment.');
+  }
+
   try {
     isSigningIn = true;
     const result = await signInWithPopup(auth, googleProvider);
@@ -96,6 +115,9 @@ export const getAccessToken = async (): Promise<string | null> => {
  * Sign out and clear in-memory token.
  */
 export const logout = async () => {
-  await signOut(auth);
+  if (auth) {
+    await signOut(auth);
+  }
   cachedAccessToken = null;
 };
+
