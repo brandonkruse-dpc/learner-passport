@@ -1,0 +1,104 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@layer utilities {
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  /* Hide scrollbar for IE, Edge and Firefox */
+  .no-scrollbar {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+}
+
+/* Dark mode form controls and container base stylings */
+html.dark .bg-white:not(.print-include):not(.printable-document):not(.printable-document *) {
+  background-color: #0f172a;
+}
+
+html.dark .bg-slate-50:not(.print-include):not(.printable-document):not(.printable-document *) {
+  background-color: #1e293b;
+}
+
+html.dark .bg-slate-100:not(.print-include):not(.printable-document):not(.printable-document *) {
+  background-color: #1e293b;
+}
+
+html.dark .border-slate-200:not(.printable-document):not(.printable-document *) {
+  border-color: #334155;
+}
+
+html.dark .border-slate-300:not(.printable-document):not(.printable-document *) {
+  border-color: #475569;
+}
+
+html.dark .text-slate-900:not(.printable-document):not(.printable-document *) {
+  color: #f8fafc;
+}
+
+html.dark .text-slate-800:not(.printable-document):not(.printable-document *) {
+  color: #e2e8f0;
+}
+
+html.dark .text-slate-700:not(.printable-document):not(.printable-document *) {
+  color: #cbd5e1;
+}
+
+html.dark .text-slate-600:not(.printable-document):not(.printable-document *) {
+  color: #94a3b8;
+}
+
+html.dark input:not([type="checkbox"]):not([type="radio"]):not(.printable-document *),
+html.dark textarea:not(.printable-document *),
+html.dark select:not(.printable-document *) {
+  background-color: #0b1120 !important;
+  color: #f1f5f9 !important;
+  border-color: #334155 !important;
+}
+
+html.dark input::placeholder,
+html.dark textarea::placeholder {
+  color: #64748b !important;
+}
+
+html.dark input:focus,
+html.dark textarea:focus,
+html.dark select:focus {
+  border-color: #3b82f6 !important;
+}
+
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 15mm 15mm 15mm 15mm;
+  }
+
+  body {
+    background-color: white !important;
+    color: #0f172a !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Hide interactive controls when printing */
+  header,
+  nav,
+  .no-print,
+  button:not(.print-include) {
+    display: none !important;
+  }
+
+  .print-page {
+    break-after: page;
+    page-break-after: always;
+  }
+
+  /* Ensure background colors on tables and headers print */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+}

@@ -1,0 +1,276 @@
+import { LearnerPassportData } from '../types/passport';
+
+export const initialEmptyPassport: LearnerPassportData = {
+  profile: {
+    studentName: '',
+    mypEntryYear: '',
+    dpEntryYear: '',
+    advisor: '',
+  },
+  whoIAm: {
+    thingsIValue: '',
+    howIWouldIntroduceMyself: '',
+    thenVsNow: {
+      myp_entry: '',
+      myp_mid: '',
+      myp5_personal_project: '',
+      dp1: '',
+      dp_grad: '',
+    },
+  },
+  passionsCuriosity: {
+    thingsILoveDoing: '',
+    newThingsITried: [
+      { id: '1', date: '', somethingNew: '', howItWent: '', keepExploring: 'Yes' },
+      { id: '2', date: '', somethingNew: '', howItWent: '', keepExploring: 'Maybe' },
+    ],
+    questionsWondering: '',
+    stuckWithMe: '',
+  },
+  strengthsGrowth: {
+    checkpoints: {
+      myp_entry: { strengthProudOf: '', somethingToGrow: '' },
+      myp_mid: { strengthProudOf: '', somethingToGrow: '' },
+      myp5_personal_project: { strengthProudOf: '', somethingToGrow: '' },
+      dp1: { strengthProudOf: '', somethingToGrow: '' },
+      dp_grad: { strengthProudOf: '', somethingToGrow: '' },
+    },
+    adultStrength: '',
+    oneSmallStep: '',
+  },
+  academicSkills: {
+    skillProudOf: '',
+    skillStillWorkingOn: '',
+    scorecardsLocation: '',
+    approachesToLearning: {
+      Thinking: { myp: '', personalProject: '', dp: '' },
+      Communication: { myp: '', personalProject: '', dp: '' },
+      Social: { myp: '', personalProject: '', dp: '' },
+      'Self-management': { myp: '', personalProject: '', dp: '' },
+      Research: { myp: '', personalProject: '', dp: '' },
+    },
+  },
+  socialEmotional: {
+    connectWithOthers: '',
+    momentHelped: '',
+    cupCheckpoints: {
+      myp_entry: { rating: '', notes: '' },
+      myp_mid: { rating: '', notes: '' },
+      myp5_personal_project: { rating: '', notes: '' },
+      dp1: { rating: '', notes: '' },
+      dp_grad: { rating: '', notes: '' },
+    },
+    belongAtSchool: '',
+  },
+  beyondClassroom: {
+    activities: [
+      { id: '1', year: 'MYP1', activity: '', role: '', outcome: '' },
+      { id: '2', year: 'MYP2', activity: '', role: '', outcome: '' },
+    ],
+    superCurricularHighlight: '',
+  },
+  goalsDirection: {
+    bigBraveGoal: '',
+    whereHeaded: '',
+    futurePathwaysCurious: '',
+  },
+  transitionPathway: {
+    lookingBackMyp: '',
+    dpSubjectsChosen: '',
+    aspirationsDpBeyond: '',
+    advisorEndorsement: '',
+    studentSignature: '',
+    studentSignatureDate: '',
+    advisorSignature: '',
+    advisorSignatureDate: '',
+  },
+  learningStory: {
+    MYP1: { word: '', story: '' },
+    MYP2: { word: '', story: '' },
+    MYP3: { word: '', story: '' },
+    MYP4: { word: '', story: '' },
+    MYP5: { word: '', story: '' },
+    DP1: { word: '', story: '' },
+    DP2: { word: '', story: '' },
+  },
+  advisorNotes: {
+    MYP1: { comment: '', signature: '' },
+    MYP2: { comment: '', signature: '' },
+    MYP3: { comment: '', signature: '' },
+    MYP4: { comment: '', signature: '' },
+    MYP5: { comment: '', signature: '' },
+    DP1: { comment: '', signature: '' },
+    DP2: { comment: '', signature: '' },
+  },
+};
+
+export const samplePassport: LearnerPassportData = {
+  profile: {
+    studentName: 'Maya Thorne',
+    mypEntryYear: '2022 (MYP1)',
+    dpEntryYear: '2026 (DP1)',
+    advisor: 'Dr. Marcus Vance & Ms. Emily Rivera',
+  },
+  whoIAm: {
+    thingsIValue: 'Curiosity without fear of being wrong, kindness in small moments, collaboration over competition, and creative problem solving.',
+    howIWouldIntroduceMyself: 'An aspiring environmental engineer who loves film photography, debate, building sourdough starter cultures, and playing cello in the chamber ensemble.',
+    thenVsNow: {
+      myp_entry: 'Curious, nervous, eager',
+      myp_mid: 'Exploring, energetic, questioning',
+      myp5_personal_project: 'Focused, collaborative, self-driven',
+      dp1: 'Resilient, analytical, grounded',
+      dp_grad: 'Visionary, reflective, proactive',
+    },
+  },
+  passionsCuriosity: {
+    thingsILoveDoing: 'Solar cell prototyping, macro nature photography, community gardening on weekends, listening to economics podcasts, and fencing.',
+    newThingsITried: [
+      {
+        id: 'p1',
+        date: '2023-10-14',
+        somethingNew: 'Robotics Team Arduino Firmware sprint',
+        howItWent: 'Challenging syntax at first, but built our autonomous sensor rover in 3 days!',
+        keepExploring: 'Yes',
+      },
+      {
+        id: 'p2',
+        date: '2024-02-18',
+        somethingNew: 'Model United Nations UNEP Delegate (Dhaka)',
+        howItWent: 'Felt intimidating initially speaking to 120 delegates, but drafted a resolution on water security that passed.',
+        keepExploring: 'Yes',
+      },
+      {
+        id: 'p3',
+        date: '2024-09-05',
+        somethingNew: 'Analog darkroom film developing workshop',
+        howItWent: 'Loved the quiet patient chemistry; ruined first roll but second came out magical.',
+        keepExploring: 'Yes',
+      },
+      {
+        id: 'p4',
+        date: '2025-01-20',
+        somethingNew: 'Beginner Jazz Improvisation ensemble',
+        howItWent: 'Struggled with chord changes outside classical sheet music, but great ear training.',
+        keepExploring: 'Maybe',
+      },
+    ],
+    questionsWondering: 'How can small-scale decentralized solar microgrids empower flood-prone communities? How do collective narratives shape environmental empathy?',
+    stuckWithMe: 'Braiding Sweetgrass by Robin Wall Kimmerer — the idea that reciprocity with living systems is both scientific and cultural.',
+  },
+  strengthsGrowth: {
+    checkpoints: {
+      myp_entry: {
+        strengthProudOf: 'Excitement to volunteer for class presentations and ask bold questions.',
+        somethingToGrow: 'Managing long-term homework deadlines without last-minute panics.',
+      },
+      myp_mid: {
+        strengthProudOf: 'Connecting disparate subjects together (biology concepts inside visual arts).',
+        somethingToGrow: 'Saying no to too many extracurricular commitments at once.',
+      },
+      myp5_personal_project: {
+        strengthProudOf: 'Sustained self-directed research: completed a 40-page sustainable irrigation design.',
+        somethingToGrow: 'Being kinder to myself when early prototypes fail.',
+      },
+      dp1: {
+        strengthProudOf: 'Critical analysis of source methodologies in Environmental Systems & Societies.',
+        somethingToGrow: 'Maintaining regular sleep hygiene during major assessment periods.',
+      },
+      dp_grad: {
+        strengthProudOf: 'Synthesizing diverse viewpoints into constructive team action.',
+        somethingToGrow: 'Navigating ambiguity in open-ended university-level research.',
+      },
+    },
+    adultStrength: 'Coach Miller: "Maya is the glue of the team — she notices who is struggling on the sidelines and draws them in with genuine warmth and patience."',
+    oneSmallStep: 'Setting up weekly time-blocking on Sundays and protecting one completely screen-free evening each week.',
+  },
+  academicSkills: {
+    skillProudOf: 'Data synthesis and statistical uncertainty analysis in Science Criteria C & D investigations.',
+    skillStillWorkingOn: 'Structuring timed comparative essays under strict exam conditions; learning to outline arguments in 5 minutes.',
+    scorecardsLocation: 'Google Drive folder: "Maya Thorne - Academic Portfolio & ATL Scorecards (ISD ManageBac)"',
+    approachesToLearning: {
+      Thinking: { myp: 'Practitioner', personalProject: 'Expert', dp: 'Expert' },
+      Communication: { myp: 'Practitioner', personalProject: 'Practitioner', dp: 'Expert' },
+      Social: { myp: 'Learner', personalProject: 'Practitioner', dp: 'Practitioner' },
+      'Self-management': { myp: 'Learner', personalProject: 'Practitioner', dp: 'Practitioner' },
+      Research: { myp: 'Practitioner', personalProject: 'Expert', dp: 'Expert' },
+    },
+  },
+  socialEmotional: {
+    connectWithOthers: 'Our Grade 10 homeroom circle, the Varsity cross-country squad, and my lab partner group in Chemistry.',
+    momentHelped: 'Organized peer revision study sessions for peers who had fallen behind in Math Extended before midterms.',
+    cupCheckpoints: {
+      myp_entry: { rating: 4, notes: 'Excited by new school and campus, but slightly tired by the end of week 6.' },
+      myp_mid: { rating: 4, notes: 'Good balance of sports and classes; had great fun in the school musical.' },
+      myp5_personal_project: { rating: 3, notes: 'Heavy deadline week with Personal Project report submission and mock exams.' },
+      dp1: { rating: 4, notes: 'Found good study rhythm with friends; feeling challenged in a healthy way.' },
+      dp_grad: { rating: 5, notes: 'Deeply fulfilled with friends and proud of growth across all 6 years.' },
+    },
+    belongAtSchool: 'Yes — ISD feels like a second home where diverse voices are valued and people genuinely celebrate each other.',
+  },
+  beyondClassroom: {
+    activities: [
+      {
+        id: 'a1',
+        year: 'MYP2-MYP3',
+        activity: 'Junior Science Olympiad & Eco-Club',
+        role: 'Co-lead, Water Audit Team',
+        outcome: 'Helped reduce school cafeteria single-use plastics by 40% and presented data to administration.',
+      },
+      {
+        id: 'a2',
+        year: 'MYP4-MYP5',
+        activity: 'ISD Model United Nations (ISDMUN)',
+        role: 'Deputy Chair, Environment Committee',
+        outcome: 'Gained procedural confidence, managed debates between 45 international delegates.',
+      },
+      {
+        id: 'a3',
+        year: 'MYP3-DP1',
+        activity: 'Chamber Orchestra (Cello)',
+        role: 'Principal Cellist',
+        outcome: 'Learned active musical listening and collaborative phrasing during annual gala concerts.',
+      },
+      {
+        id: 'a4',
+        year: 'DP1-DP2',
+        activity: 'Local River Cleanup & Microplastic Biomonitoring CAS Project',
+        role: 'Founder & Student Lead',
+        outcome: 'Partnered with university ecology department; collected 200+ water samples for public report.',
+      },
+    ],
+    superCurricularHighlight: 'Completed an open-source online course in Geographic Information Systems (GIS) mapping to model mangrove restoration along coastal zones.',
+  },
+  goalsDirection: {
+    bigBraveGoal: 'Design, test, and install a rainwater bio-filtration pilot in our community garden, presenting empirical water quality metrics to the municipal board.',
+    whereHeaded: 'Heading toward an interdisciplinary path combining Sustainable Engineering, Environmental Policy, and Technology.',
+    futurePathwaysCurious: 'HL Environmental Systems & Societies, HL Chemistry, HL Math Analysis & Approaches, SL Literature, SL History, SL Spanish B.',
+  },
+  transitionPathway: {
+    lookingBackMyp: 'My passion for hands-on ecological field science and community service connected through all MYP units — from criterion D essays to the Personal Project.',
+    dpSubjectsChosen: 'HL Physics/Chemistry, HL Environmental Systems & Societies, HL Math AA, SL English A Literature, SL Spanish B, SL Economics.',
+    aspirationsDpBeyond: 'Study Environmental Engineering or Environmental Earth Sciences at a university with active undergraduate field research programs.',
+    advisorEndorsement: 'Maya shows exemplary holistic ownership of her learning journey. Her curiosity is matched by genuine empathy and work ethic. Fully endorsed.',
+    studentSignature: 'Maya Thorne',
+    studentSignatureDate: '2026-03-12',
+    advisorSignature: 'Dr. Marcus Vance',
+    advisorSignatureDate: '2026-03-12',
+  },
+  learningStory: {
+    MYP1: { word: 'Wonder', story: 'Everything felt huge and fast, from science labs with real Bunsen burners to my first cross-country race.' },
+    MYP2: { word: 'Discovery', story: 'Found my voice in class debates and realized that asking "why" often opens up more interesting questions than having an immediate answer.' },
+    MYP3: { word: 'Grit', story: 'Faced tough setbacks in advanced algebra, but discovered the satisfaction of working through difficult problems step-by-step.' },
+    MYP4: { word: 'Connection', story: 'Started seeing that science, ethics, and human stories are inextricably linked together.' },
+    MYP5: { word: 'Ownership', story: 'The Personal Project showed me I can take an abstract spark of curiosity and build a working tangible prototype from scratch.' },
+    DP1: { word: 'Depth', story: 'Diving into higher-level coursework alongside close friends; developing intellectual independence and genuine academic passion.' },
+    DP2: { word: 'Legacy', story: 'Mentoring younger students in the eco-club and preparing to take everything ISD taught me out into the wider world.' },
+  },
+  advisorNotes: {
+    MYP1: { comment: 'Maya is a joyful presence in homeroom who supports her peers spontaneously. Watch for pace of homework balancing.', signature: 'M. Vance (2022-06)' },
+    MYP2: { comment: 'Stepped up tremendously in group tasks. Shows keen moral imagination in social studies inquiries.', signature: 'M. Vance (2023-06)' },
+    MYP3: { comment: 'Demonstrated exceptional perseverance in lab sciences. Continues to be a compassionate classmate.', signature: 'M. Vance (2024-06)' },
+    MYP4: { comment: 'Consistently thoughtful reflections; ready for independent leadership roles across the school.', signature: 'E. Rivera (2025-06)' },
+    MYP5: { comment: 'Outstanding Personal Project exhibition. Shows exemplary maturity during DP pathway consultations.', signature: 'E. Rivera (2026-06)' },
+    DP1: { comment: 'Thriving in HL coursework; balances rigour with genuine pastoral care for classmates.', signature: 'M. Vance (2027-06)' },
+    DP2: { comment: 'A consummate whole-learner graduate ready to make meaningful contributions to the global community.', signature: 'M. Vance (2028-06)' },
+  },
+};

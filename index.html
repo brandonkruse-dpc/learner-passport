@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Learner Passport | A Whole-Learner Record</title>
+    <meta name="description" content="A whole-learner digital record for MYP through DP with modular form tabs, dropdown navigation, CSV export/import, and selective PDF document output." />
+    <meta property="og:title" content="My Learner Passport | A Whole-Learner Record" />
+    <meta property="og:description" content="A whole-learner digital record for MYP through DP with modular form tabs, dropdown navigation, CSV export/import, and selective PDF document output." />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <script>
+      (function() {
+        try {
+          const theme = localStorage.getItem('learner_passport_theme');
+          const isDark = theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches);
+          if (isDark) {
+            document.documentElement.classList.add('dark');
+          } else {
+            document.documentElement.classList.remove('dark');
+          }
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+

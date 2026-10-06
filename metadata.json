@@ -1,0 +1,8 @@
+{
+  "name": "Remix My Learner Passport",
+  "description": "A whole-learner digital record for MYP through DP with modular form tabs, dropdown navigation, CSV export/import, and selective PDF document output.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
