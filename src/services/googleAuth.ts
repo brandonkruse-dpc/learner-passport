@@ -98,6 +98,20 @@ export const googleSignIn = async (): Promise<{ user: User; accessToken: string 
       throw new Error('Sign-in popup was blocked by your browser. Please allow popups for this site and try again.');
     }
 
+    if (
+      error?.code === 'auth/unauthorized-domain' ||
+      error?.message?.includes('unauthorized-domain')
+    ) {
+      const host = typeof window !== 'undefined' ? window.location.hostname : 'brandonkruse-dpc.github.io';
+      const customErr: any = new Error(
+        `Domain "${host}" is not authorized for Firebase Authentication. Please add "${host}" to the Authorized Domains list in your Firebase Console.`
+      );
+      customErr.code = 'auth/unauthorized-domain';
+      customErr.domain = host;
+      customErr.projectId = (firebaseConfig as any)?.projectId || 'gen-lang-client-0743385841';
+      throw customErr;
+    }
+
     throw error;
   } finally {
     isSigningIn = false;

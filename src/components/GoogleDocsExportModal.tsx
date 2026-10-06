@@ -19,6 +19,7 @@ import {
   LogOut,
   FolderOpen,
   Calendar,
+  ShieldAlert,
 } from 'lucide-react';
 
 interface GoogleDocsExportModalProps {
@@ -59,6 +60,9 @@ export const GoogleDocsExportModal: React.FC<GoogleDocsExportModalProps> = ({
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [lastCreatedDoc, setLastCreatedDoc] = useState<ExportedGoogleDoc | null>(null);
   const [copied, setCopied] = useState<boolean>(false);
+  const [isUnauthorizedDomain, setIsUnauthorizedDomain] = useState<boolean>(false);
+  const [domainToAuthorize, setDomainToAuthorize] = useState<string>('');
+  const [domainCopied, setDomainCopied] = useState<boolean>(false);
 
   if (!isOpen) return null;
 
@@ -86,6 +90,7 @@ export const GoogleDocsExportModal: React.FC<GoogleDocsExportModalProps> = ({
 
   const handleSignIn = async () => {
     try {
+      setIsUnauthorizedDomain(false);
       setStatus('auth');
       setStatusMessage('Connecting with Google SSO...');
       const result = await googleSignIn();
@@ -107,6 +112,25 @@ export const GoogleDocsExportModal: React.FC<GoogleDocsExportModalProps> = ({
         setStatusMessage('');
         return;
       }
+
+      if (
+        err?.code === 'auth/unauthorized-domain' ||
+        err?.message?.includes('unauthorized-domain') ||
+        err?.message?.includes('not authorized')
+      ) {
+        setIsUnauthorizedDomain(true);
+        setDomainToAuthorize(
+          err?.domain ||
+            (typeof window !== 'undefined' ? window.location.hostname : 'brandonkruse-dpc.github.io')
+        );
+        setStatus('error');
+        setErrorMessage(
+          err?.message ||
+            'Domain is not authorized for OAuth operations in your Firebase project.'
+        );
+        return;
+      }
+
       setStatus('error');
       setErrorMessage(err?.message || 'Failed to sign in with Google');
     }
@@ -124,6 +148,7 @@ export const GoogleDocsExportModal: React.FC<GoogleDocsExportModalProps> = ({
 
   const handleExportToGoogleDoc = async () => {
     try {
+      setIsUnauthorizedDomain(false);
       setStatus('exporting');
       setErrorMessage('');
 
@@ -184,6 +209,25 @@ export const GoogleDocsExportModal: React.FC<GoogleDocsExportModalProps> = ({
         setStatusMessage('');
         return;
       }
+
+      if (
+        err?.code === 'auth/unauthorized-domain' ||
+        err?.message?.includes('unauthorized-domain') ||
+        err?.message?.includes('not authorized')
+      ) {
+        setIsUnauthorizedDomain(true);
+        setDomainToAuthorize(
+          err?.domain ||
+            (typeof window !== 'undefined' ? window.location.hostname : 'brandonkruse-dpc.github.io')
+        );
+        setStatus('error');
+        setErrorMessage(
+          err?.message ||
+            'Domain is not authorized for OAuth operations in your Firebase project.'
+        );
+        return;
+      }
+
       setStatus('error');
       setErrorMessage(err?.message || 'An error occurred while creating the Google Doc.');
     }
@@ -324,8 +368,90 @@ export const GoogleDocsExportModal: React.FC<GoogleDocsExportModalProps> = ({
             </div>
           )}
 
-          {/* Error Message */}
-          {status === 'error' && errorMessage && (
+          {/* Unauthorized Domain Setup Guide */}
+          {status === 'error' && isUnauthorizedDomain && (
+            <div className="p-4 sm:p-5 rounded-2xl bg-amber-50 dark:bg-amber-950/40 border-2 border-amber-300 dark:border-amber-700/80 text-amber-900 dark:text-amber-100 space-y-4 animate-fadeIn shadow-xs">
+              <div className="flex items-start gap-3">
+                <div className="w-9 h-9 rounded-xl bg-amber-500/20 text-amber-600 dark:text-amber-400 flex items-center justify-center shrink-0">
+                  <ShieldAlert className="w-5 h-5" />
+                </div>
+                <div className="space-y-1">
+                  <h3 className="text-sm font-bold text-amber-900 dark:text-amber-200">
+                    GitHub Pages Domain Needs 1-Click Authorization in Firebase
+                  </h3>
+                  <p className="text-xs text-amber-800 dark:text-amber-300">
+                    Google OAuth prevents sign-ins from unrecognized web domains for security. Because this app is hosted on GitHub Pages, the domain <span className="font-mono font-semibold underline">{domainToAuthorize || 'brandonkruse-dpc.github.io'}</span> must be listed in your Firebase project's <strong>Authorized domains</strong>.
+                  </p>
+                </div>
+              </div>
+
+              <div className="bg-white/80 dark:bg-slate-900/80 rounded-xl p-3.5 border border-amber-200 dark:border-amber-800/80 space-y-2.5 text-xs">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                  <div className="space-y-0.5">
+                    <span className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider block">
+                      Exact Domain Hostname to Authorize:
+                    </span>
+                    <span className="font-mono font-bold text-sm text-slate-900 dark:text-white select-all">
+                      {domainToAuthorize || (typeof window !== 'undefined' ? window.location.hostname : 'brandonkruse-dpc.github.io')}
+                    </span>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const host = domainToAuthorize || (typeof window !== 'undefined' ? window.location.hostname : 'brandonkruse-dpc.github.io');
+                      navigator.clipboard.writeText(host);
+                      setDomainCopied(true);
+                      setTimeout(() => setDomainCopied(false), 2500);
+                    }}
+                    className="inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg border border-amber-300 dark:border-amber-700 bg-amber-100/60 dark:bg-amber-900/40 text-amber-900 dark:text-amber-200 font-semibold text-xs hover:bg-amber-200/60 dark:hover:bg-amber-900/70 transition-colors shrink-0"
+                  >
+                    {domainCopied ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
+                    <span>{domainCopied ? 'Copied Domain!' : 'Copy Domain'}</span>
+                  </button>
+                </div>
+
+                <div className="pt-2 border-t border-amber-200/60 dark:border-amber-800/60 text-slate-700 dark:text-slate-300 text-[11px] space-y-1.5">
+                  <p className="font-bold text-slate-800 dark:text-slate-200">How to authorize in 30 seconds:</p>
+                  <ol className="list-decimal list-inside space-y-1 pl-1 leading-relaxed">
+                    <li>
+                      Click the button below to open your Firebase Console Authentication Settings for project <strong className="font-mono">gen-lang-client-0743385841</strong>.
+                    </li>
+                    <li>
+                      Scroll down to the <strong>Authorized domains</strong> card and click <strong>Add domain</strong>.
+                    </li>
+                    <li>
+                      Paste <code className="bg-amber-100 dark:bg-amber-900/60 px-1 py-0.5 rounded font-mono text-[10px] font-bold">{domainToAuthorize || 'brandonkruse-dpc.github.io'}</code> and click <strong>Save</strong>.
+                    </li>
+                  </ol>
+                </div>
+              </div>
+
+              <div className="flex flex-wrap items-center gap-2.5 pt-1">
+                <a
+                  href="https://console.firebase.google.com/project/gen-lang-client-0743385841/authentication/settings"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs shadow-xs transition-colors"
+                >
+                  <ExternalLink className="w-3.5 h-3.5" />
+                  <span>Open Firebase Auth Settings</span>
+                </a>
+
+                <button
+                  type="button"
+                  onClick={handleSignIn}
+                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 dark:bg-slate-100 dark:hover:bg-white text-white dark:text-slate-900 font-bold text-xs shadow-xs transition-colors"
+                >
+                  <Sparkles className="w-3.5 h-3.5 text-amber-400 dark:text-amber-600" />
+                  <span>Retry Google Connection</span>
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* Standard Error Message if NOT an unauthorized domain error */}
+          {status === 'error' && errorMessage && !isUnauthorizedDomain && (
             <div className="p-4 rounded-xl bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-800 text-rose-900 dark:text-rose-200 text-xs flex items-start gap-2.5">
               <AlertCircle className="w-4 h-4 text-rose-600 dark:text-rose-400 shrink-0 mt-0.5" />
               <div>
